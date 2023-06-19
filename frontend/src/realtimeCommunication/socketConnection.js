@@ -15,4 +15,9 @@ export const connectWithSocketServer = (userDetails) => {
         console.log('sucessfully connected with socket.io server');
         console.log(socket.id);
     })
+
+    // socket.on('friend-invitation',(data) =>{
+    //     const { pendingInvitations } = data
+    //     store.dispatch(setPendingFriendInvitation())
+    // })
 }

@@ -46,6 +46,19 @@ export const register = async (data) => {
 };
 
 // secure routes
+export const sendFriendInvitation = async (data) => {
+  console.log('data', data)
+  try {
+    return await apiClient.post("/friend-invitation/invite", data);
+  } catch (exception) {
+    checkResponseCode(exception);
+    return {
+      error: true,
+      exception,
+    };
+  }
+};
+
 
 // eslint-disable-next-line no-unused-vars
 const checkResponseCode = (exception) => {
