@@ -17,13 +17,14 @@ const Wrapper = styled("div")({
 
 const Dashboard = ({ setUserDetails }) => {
   useEffect(() => {
-    const userDetails = localStorage.getItem("user");
-
+    const userDetails = JSON.parse(localStorage.getItem("user"));
     if (!userDetails) {
       logout();
     } else {
-      setUserDetails(JSON.parse(userDetails));
-      connectWithSocketServer(JSON.parse(userDetails));
+      const decodedJwt = parseJwt(userDetails.token);
+      if (decodedJwt.exp * 1000 < Date.now()) logout();
+      setUserDetails(userDetails);
+      connectWithSocketServer(userDetails);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -45,3 +46,11 @@ const mapActionsToProps = (dispatch) => {
 };
 
 export default connect(null, mapActionsToProps)(Dashboard);
+
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch (e) {
+    return null;
+  }
+};
